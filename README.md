@@ -28,7 +28,7 @@ Code developed by me in its entirety.
 
 #### Tensorflow code
 
-Majority of the code taken from [here](https://github.com/BNN-UPC/GNN-NIDS). Some it has been updated and adapted.
+Majority of the code taken from [here](https://github.com/BNN-UPC/GNN-NIDS). Some of it has been updated and adapted.
 
 
 ### Library `comaslib` (provisional name)

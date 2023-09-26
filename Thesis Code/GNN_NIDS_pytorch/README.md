@@ -1,4 +1,4 @@
-# GNN-NIDS native TensorFlow implementation
+# GNN-NIDS native Pytorch implementation
 
 In this directory you may find a functional implementation of our GNN-based NIDS. The concrete GNN architecture in encoded in the *GNN.py* file, meanwhile the whole model can be trained by simply executing the *main.py* file, as shown below.
 
