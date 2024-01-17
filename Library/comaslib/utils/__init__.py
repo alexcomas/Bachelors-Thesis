@@ -1,4 +1,5 @@
 from . import tf
 from . import torch
 
-from . import ProgressBar
+from .ProgressBar import ProgressBar
+from . import methods
