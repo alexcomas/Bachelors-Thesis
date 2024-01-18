@@ -16,6 +16,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import torch
 import configparser
+import os.path
 
 def list_to_dict(l):
     indices = range(len(l))
@@ -89,22 +90,22 @@ class Generator:
             case 'standardization':
                 self.standardization = configparser.ConfigParser()
                 self.standardization._interpolation = configparser.ExtendedInterpolation()
-                self.standardization.read(data_treatment_params_path + 'standardization_parameters.ini')
+                self.standardization.read(os.path.join(data_treatment_params_path,'standardization_parameters.ini'))
                 self.data_treatment_function = self.standardization_function
             case 'normalization':
                 self.normalization = configparser.ConfigParser()
                 self.normalization._interpolation = configparser.ExtendedInterpolation()
-                self.normalization.read(data_treatment_params_path + 'normalization_parameters.ini')
+                self.normalization.read(os.path.join(data_treatment_params_path,'normalization_parameters.ini'))
                 self.data_treatment_function = self.normalization_function
             case 'special_normalization':
                 self.special_normalization = configparser.ConfigParser()
                 self.special_normalization._interpolation = configparser.ExtendedInterpolation()
-                self.special_normalization.read(data_treatment_params_path + 'special_normalization_parameters.ini')
+                self.special_normalization.read(os.path.join(data_treatment_params_path,'special_normalization_parameters.ini'))
                 self.data_treatment_function = self.special_normalization_function
             case 'robust_normalization':
                 self.robust_normalization = configparser.ConfigParser()
                 self.robust_normalization._interpolation = configparser.ExtendedInterpolation()
-                self.robust_normalization.read(data_treatment_params_path + 'robust_normalization_parameters.ini')
+                self.robust_normalization.read(os.path.join(data_treatment_params_path,'robust_normalization_parameters.ini'))
                 self.data_treatment_function = self.robust_normalization_function
             case _:
                 self.data_treatment_function = self.none_function

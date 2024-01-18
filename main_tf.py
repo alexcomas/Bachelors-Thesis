@@ -1,9 +1,6 @@
 import configparser
-import time
-import numpy as np
 import os
 import tensorflow as tf
-import importlib
 import configparser
 import warnings
 warnings.filterwarnings('ignore')
@@ -18,7 +15,7 @@ params.read('./config.ini')
 
 directory = 'DIRECTORIES_' + params['RUN_CONFIG']['dataset_data'] + '_LABELS_' + params['RUN_CONFIG']['dataset_labels']
 
-generator = comaslib.data.generator.Generator(dataset='IDS2017')
+generator = comaslib.data.Generator(dataset='IDS2017')
 path_logs = os.path.abspath(params[directory]['logs'])
 (model, startingEpoch) = comaslib.model.tf.GNN.make_or_restore_model(hyperparameters=params['HYPERPARAMETERS'], logs_dir=params[directory]['logs'])
 
@@ -31,7 +28,7 @@ train_dataset = comaslib.data.tf.IDS_Dataset(
     dataset_path=os.path.abspath(params[directory]["train"]),
     dataset=params['RUN_CONFIG']['dataset_data'],
     dataset_labels=params['RUN_CONFIG']['dataset_labels'],
-    for_framework='tensorflow',
+    window = int(params['RUN_CONFIG']['window']),
     data_treatment='none',
     data_treatment_params_path=os.path.abspath(params[directory]["data_treatment"])
     )
@@ -39,14 +36,12 @@ val_dataset = comaslib.data.tf.IDS_Dataset(
     dataset_path=os.path.abspath(params[directory]["validation"]),
     dataset=params['RUN_CONFIG']['dataset_data'],
     dataset_labels=params['RUN_CONFIG']['dataset_labels'],
-    for_framework='tensorflow',
-    data_treatment='none',
+    window = int(params['RUN_CONFIG']['window']),
+    data_treatment=params['RUN_CONFIG']['data_treatment'],
     data_treatment_params_path=os.path.abspath(params[directory]["data_treatment"])
     )
-
-window = int(params['RUN_CONFIG']['window'])
-model.fit(train_dataset.input_fn(window=window, validation=False),
-          validation_data= val_dataset.input_fn(window=window, validation=True),
+model.fit(train_dataset.getLoader({'validation': False}),
+          validation_data= val_dataset.getLoader({'validation': True}),
         #   validation_steps = 249,
           steps_per_epoch = 1600,
           batch_size=1,
