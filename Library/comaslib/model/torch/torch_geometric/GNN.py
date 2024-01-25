@@ -15,7 +15,6 @@ import glob
 import sys
 import time
 from tkinter import X
-from hamcrest import starts_with
 import torch
 import numpy as np
 from torch.optim import Adam
@@ -31,10 +30,10 @@ from torch_geometric.data import HeteroData
 from torch_geometric.nn.conv import HeteroConv
 from sklearn.metrics import f1_score, accuracy_score, precision_recall_curve, precision_score, recall_score, confusion_matrix
 
-class pg_GNN(MessagePassing):
+class GNN(MessagePassing):
 
     def __init__(self, config, loadEpoch : int = None, loadBestEpoch=False):
-        super(pg_GNN, self).__init__(aggr='mean')
+        super(GNN, self).__init__(aggr='mean')
         
         # Configuration dictionary. It contains the needed Hyperparameters for the model.
         # All the Hyperparameters can be found in the config.ini file
@@ -318,8 +317,8 @@ class pg_GNN(MessagePassing):
             print("")
             print("     Epoch stats:" + "    {:.2f}".format(time.time() - epoch_start_time) + "    {:.2f}".format(time.time() - start_time))
                  
-            train_metrics = pg_GNN.calculateMetrics(train_trueLabels, train_predLabels, extended=self.extendedMetrics)
-            eval_metrics = pg_GNN.calculateMetrics(eval_trueLabels, eval_predLabels, extended=self.extendedMetrics)
+            train_metrics = GNN.calculateMetrics(train_trueLabels, train_predLabels, extended=self.extendedMetrics)
+            eval_metrics = GNN.calculateMetrics(eval_trueLabels, eval_predLabels, extended=self.extendedMetrics)
 
             print("             TRAIN ----- Loss: " + "{:.3f}".format(train_loss) + " - Accuracy: " + "{:.5f}".format(train_metrics['accuracy'])
                 + " - Weighted F1: " + "{:.5f}".format(train_metrics['weighted_f1']) + " - Macro F1: " + "{:.5f}".format(train_metrics['macro_f1']))

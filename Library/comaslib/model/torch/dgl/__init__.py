@@ -1,1 +1,1 @@
-from . import dgl_GNN
+from .GNN import GNN

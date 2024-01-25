@@ -13,9 +13,6 @@
 import os
 import glob
 import sys
-import time
-from tkinter import X
-from hamcrest import starts_with
 import torch
 import numpy as np
 from torch.optim import Adam
@@ -25,14 +22,14 @@ from torch.nn import CrossEntropyLoss
 from ....utils.torch.torch_utils import configWandB
 import wandb
 from ....utils.ProgressBar import ProgressBar
-from ....data.generator import attack_names
+from ....data.generator import Generator
 
 from sklearn.metrics import f1_score, accuracy_score, precision_recall_curve, precision_score, recall_score, confusion_matrix
 
-class dgl_GNN(torch.nn.Module):
+class GNN(torch.nn.Module):
 
     def __init__(self, config, loadEpoch : int = None, loadBestEpoch=False):
-        super(dgl_GNN, self).__init__()
+        super(GNN, self).__init__()
         
         # Configuration dictionary. It contains the needed Hyperparameters for the model.
         # All the Hyperparameters can be found in the config.ini file
@@ -356,11 +353,11 @@ class dgl_GNN(torch.nn.Module):
 
             print("             TRAIN ----- Loss: " + "{:.3f}".format(train_loss) + " - Accuracy: " + "{:.5f}".format(train_metrics['accuracy'])
                 + " - Weighted F1: " + "{:.5f}".format(train_metrics['weighted_f1']) + " - Macro F1: " + "{:.5f}".format(train_metrics['macro_f1']))
-            print("                 Labels (pred/true) +++++ " + ' - '.join([f"{attack_names[int(el[2])]}: {train_metrics.get('pred_count_'+ el[2],0)}/{train_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in train_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
+            print("                 Labels (pred/true) +++++ " + ' - '.join([f"{Generator.attack_names[int(el[2])]}: {train_metrics.get('pred_count_'+ el[2],0)}/{train_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in train_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
             
             print("             EVAL  ----- Loss: " + "{:.3f}".format(eval_loss) + " - Accuracy: " + "{:.5f}".format(eval_metrics['accuracy'])
                 + " - Weighted F1: " + "{:.5f}".format(eval_metrics['weighted_f1']) + " - Macro F1: " + "{:.5f}".format(eval_metrics['macro_f1']))
-            print("                 Labels (pred/true) +++++ " + ' - '.join([f"{attack_names[int(el[2])]}: {eval_metrics.get('pred_count_'+ el[2],0)}/{eval_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in eval_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
+            print("                 Labels (pred/true) +++++ " + ' - '.join([f"{Generator.attack_names[int(el[2])]}: {eval_metrics.get('pred_count_'+ el[2],0)}/{eval_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in eval_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
             
             self.scheduler.step()
 
@@ -412,7 +409,7 @@ class dgl_GNN(torch.nn.Module):
 
         print("             EVAL  ----- Loss: " + "{:.3f}".format(eval_loss) + " - Accuracy: " + "{:.5f}".format(eval_metrics['accuracy'])
             + " - Weighted F1: " + "{:.5f}".format(eval_metrics['weighted_f1']) + " - Macro F1: " + "{:.5f}".format(eval_metrics['macro_f1']))
-        print("                 Labels (pred/true) +++++ " + ' - '.join([f"{attack_names[int(el[2])]}: {eval_metrics.get('pred_count_'+ el[2],0)}/{eval_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in eval_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
+        print("                 Labels (pred/true) +++++ " + ' - '.join([f"{Generator.attack_names[int(el[2])]}: {eval_metrics.get('pred_count_'+ el[2],0)}/{eval_metrics.get('true_count_'+ el[2], 0)}" for el in (key.split('_') for key in eval_metrics.keys()) if len(el) > 2 and el[0] == 'pred' and el[1] == 'count']))
         return eval_metrics
 
     @staticmethod

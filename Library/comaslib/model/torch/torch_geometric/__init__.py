@@ -1,1 +1,1 @@
-from . import pg_GNN
+from .GNN import GNN
