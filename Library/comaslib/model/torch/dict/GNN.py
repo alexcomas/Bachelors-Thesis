@@ -471,7 +471,7 @@ class GNN(torch.nn.Module):
         if not os.path.exists(ckpt_path):
             os.makedirs(ckpt_path)
         files = glob.glob(ckpt_path + '/*.pt')
-        resume = bool(len(files) > 0) and sweep
+        resume = bool(len(files) > 0) and not sweep
         
         if use_wandb:
             hyperparameters = configWandB(hyperparameters)
