@@ -56,3 +56,13 @@ comaslib
         ├───tf
         ├───torch
 ```
+
+# Steps to get the Data
+
+## IDS 2017
+
+1. Go to [the original web](https://www.unb.ca/cic/datasets/ids-2017.html), click on the download link at the end of the page, fill a survey and go to the PCAP directory remote folder. 
+2. Convert PCAP data to CSV (the size of the data will diminish substancially). For example, I did this with Wireshark with the following steps ([Source](https://stackoverflow.com/questions/67438703/convert-from-pcap-to-csv)):
+    1. Open .pcap file with Wireshark. 
+    2. Go to File -> Save As... -> *.pcap (This is done because the downloaded files are corrupted and would crash the next step)
+    3. Use CICFlowMeter v4 to convert the *.pcap files to CSV with the default generated attributes.
