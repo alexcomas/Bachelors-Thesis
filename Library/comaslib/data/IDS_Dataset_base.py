@@ -14,6 +14,7 @@ class IDS_Dataset_base:
         self.dataset_path = dataset_path
         # self.dataset_path = self.dataset_path.decode('utf-8')
         self.window = window
+        self.first_file_iteration_done = None
 
     def __iter__(self):
         return self.generate()
@@ -25,13 +26,14 @@ class IDS_Dataset_base:
             files = glob.glob(self.dataset_path + '/*.csv')
         else:
             files = [glob.glob(self.dataset_path)]
-        first_file_iteration_done = {f: False for f in files}
+        if self.first_file_iteration_done is None:
+            self.first_file_iteration_done = {f: False for f in files}
         for file in files:
-            if not first_file_iteration_done[file]:
+            if not self.first_file_iteration_done[file]:
                 print(f"\nOpening file in generator: {file}")
                 print("Chosen features: ", ', '.join(Generator.CHOSEN_CONNECTION_FEATURES))
                 print("Data treatment: ", self.generator.data_treatment)
-                first_file_iteration_done[file] = True
+                self.first_file_iteration_done[file] = True
             with open(file, encoding="utf8", errors='ignore') as csvfile:
                 data = csv.reader(csvfile, delimiter=',', quotechar='|')
 
